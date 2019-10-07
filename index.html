@@ -1,0 +1,62 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <script>
+    function createNode(element) {
+      return document.createElement(element);
+    }
+
+    function append(parent, el) {
+      return parent.appendChild(el);
+    }
+
+    const ul = document.getElementById("weatherData");
+    const url = "https://www.metaweather.com/api/location/2379574/"; // Get Chicago weather data
+
+    fetch(url, { mode: "no-cors" })
+      .then(resp => {
+        resp.json();
+      })
+      .then(function(data) {
+        let weatherData = data.results;
+        return weatherData.map(function(weather) {
+          let li = createNode("li"),
+            img = createNode("img"),
+            span = createNode("span");
+          img.src = weather.picture.medium;
+          span.innerHTML = `${weather.name.first} ${weather.name.last}`;
+          append(li, img);
+          append(li, span);
+          append(ul, li);
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    console.log("test");
+  </script>
+
+  <body>
+    <div>
+      <button>Press for Chicago Current Weather</button>
+    </div>
+
+    <ul id="weatherData"></ul>
+
+    <div>
+      Icons made by
+      <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware"
+        >Good Ware</a
+      >
+      from
+      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+    </div>
+
+    <!-- API https://www.metaweather.com/api/location/2379574/ -->
+  </body>
+</html>
